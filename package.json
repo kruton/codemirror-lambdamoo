@@ -1,0 +1,79 @@
+{
+  "name": "codemirror-lambdamoo",
+  "version": "0.1.0",
+  "description": "LambdaMOO language support for CodeMirror 6, powered by moo-lsp-rs WebAssembly",
+  "keywords": [
+    "codemirror",
+    "lambdamoo",
+    "lsp",
+    "moo",
+    "webassembly"
+  ],
+  "license": "MIT",
+  "author": "Kenny Root",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./worker": "./dist/worker.js",
+    "./wasm": "./dist/lsp/moo_lsp_rs_bg.wasm"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kruton/codemirror-lambdamoo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kruton/codemirror-lambdamoo/issues"
+  },
+  "homepage": "https://github.com/kruton/codemirror-lambdamoo#readme",
+  "engines": {
+    "node": ">=22.14"
+  },
+  "scripts": {
+    "clean": "node --experimental-strip-types scripts/clean.ts",
+    "sync:lsp": "node --experimental-strip-types scripts/sync-lsp.ts",
+    "build": "npm run clean && tsc -p tsconfig.build.json && node --experimental-strip-types scripts/copy-assets.ts",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build && npm run pack:check",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "biome check .",
+    "test": "vitest run",
+    "test:browser": "npm run build && playwright test",
+    "dev:e2e": "vite e2e",
+    "pack:check": "node --experimental-strip-types scripts/check-pack.ts",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@codemirror/language": "^6.11.3",
+    "@codemirror/lint": "^6.9.7",
+    "@codemirror/lsp-client": "^6.2.5",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.38.6",
+    "@lezer/highlight": "^1.2.1",
+    "comlink": "^4.4.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.2.0",
+    "happy-dom": "^20.11.2",
+    "npm-packlist": "^10.0.4",
+    "typescript": "^7.0.2",
+    "vite": "^7.3.6",
+    "vitest": "^3.2.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true
+  }
+}
