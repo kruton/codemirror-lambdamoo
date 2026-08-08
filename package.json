@@ -46,6 +46,7 @@
     "lint": "biome check .",
     "test": "vitest run",
     "test:browser": "npm run build && playwright test",
+    "predev:e2e": "npm run build",
     "dev:e2e": "vite e2e",
     "pack:check": "node --experimental-strip-types scripts/check-pack.ts",
     "prepack": "npm run build"
@@ -74,6 +75,8 @@
     "provenance": true
   },
   "allowScripts": {
-    "esbuild@0.28.1": true
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.2": true,
+    "fsevents@2.3.3": true
   }
 }
