@@ -67,7 +67,7 @@
     "happy-dom": "^20.11.2",
     "npm-packlist": "^11.0.0",
     "typescript": "^7.0.2",
-    "vite": "^7.3.6",
+    "vite": "^8.0.0",
     "vitest": "^4.0.0"
   },
   "publishConfig": {
