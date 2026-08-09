@@ -1,6 +1,6 @@
 {
   "name": "codemirror-lambdamoo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "LambdaMOO language support for CodeMirror 6, powered by moo-lsp-rs WebAssembly",
   "keywords": [
     "codemirror",
