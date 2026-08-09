@@ -68,7 +68,7 @@
     "npm-packlist": "^11.0.0",
     "typescript": "^7.0.2",
     "vite": "^7.3.6",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.0"
   },
   "publishConfig": {
     "access": "public",
