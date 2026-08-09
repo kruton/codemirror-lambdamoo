@@ -1,12 +1,7 @@
-import {
-  formatKeymap,
-  LSPClient,
-  type LSPClientConfig,
-  serverDiagnostics,
-} from "@codemirror/lsp-client";
+import { LSPClient, type LSPClientConfig, languageServerExtensions } from "@codemirror/lsp-client";
 import type { Extension } from "@codemirror/state";
-import { keymap } from "@codemirror/view";
 import { releaseProxy, transfer, wrap } from "comlink";
+import { documentHighlightCapabilities, documentHighlights } from "./document-highlights.js";
 import { lambdaMOO } from "./language.js";
 import { semanticTokenCapabilities, semanticTokens } from "./semantic-tokens.js";
 import { WorkerTransport } from "./transport.js";
@@ -65,7 +60,11 @@ export async function createLambdaMOO(options: LambdaMOOOptions = {}): Promise<L
   const clientConfig: LSPClientConfig = {
     rootUri: options.rootUri,
     timeout: options.timeout,
-    extensions: [serverDiagnostics(), semanticTokenCapabilities],
+    extensions: [
+      ...languageServerExtensions(),
+      documentHighlightCapabilities,
+      semanticTokenCapabilities,
+    ],
   };
   const client = new LSPClient(clientConfig).connect(transport);
 
@@ -89,8 +88,8 @@ export async function createLambdaMOO(options: LambdaMOOOptions = {}): Promise<L
       return [
         lambdaMOO(),
         client.plugin(uri, "lambdamoo"),
+        documentHighlights(client, uri, reportError),
         semanticTokens(client, uri, reportError),
-        keymap.of(formatKeymap),
       ];
     },
     async destroy() {

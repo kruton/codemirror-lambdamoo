@@ -1,7 +1,7 @@
-import { defaultHighlightStyle, syntaxHighlighting } from "@codemirror/language";
-import { diagnosticCount } from "@codemirror/lint";
+import { diagnosticCount, lintGutter } from "@codemirror/lint";
 import { EditorState } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
+import { basicSetup } from "codemirror";
 import { createLambdaMOO } from "codemirror-lambdamoo";
 
 const firstUri = "file:///integration/invalid.moo";
@@ -12,7 +12,7 @@ if (!parent) throw new Error("Editor fixture is missing");
 const editorParent = parent;
 
 const first = createEditor("if (ready)\nnotify(player);", firstUri);
-const second = createEditor("if (ready)\nnotify(player);\nendif", secondUri);
+const second = createEditor("ready = 1;\nif (ready)\nnotify(player);\nendif", secondUri);
 
 support.client.sync();
 const semanticTokens = await support.client.request<
@@ -50,7 +50,7 @@ function createEditor(document: string, uri: string): EditorView {
     parent: editorParent,
     state: EditorState.create({
       doc: document,
-      extensions: [support.extension(uri), syntaxHighlighting(defaultHighlightStyle)],
+      extensions: [basicSetup, lintGutter(), support.extension(uri)],
     }),
   });
 }
