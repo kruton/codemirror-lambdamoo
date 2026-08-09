@@ -65,7 +65,7 @@
     "@playwright/test": "^1.55.0",
     "@types/node": "^24.2.0",
     "happy-dom": "^20.11.2",
-    "npm-packlist": "^10.0.4",
+    "npm-packlist": "^11.0.0",
     "typescript": "^7.0.2",
     "vite": "^7.3.6",
     "vitest": "^3.2.4"
