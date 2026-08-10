@@ -6,6 +6,25 @@
     <title>LambdaMOO CodeMirror integration test</title>
   </head>
   <body>
+    <nav id="editor-toolbar" aria-label="Editor actions">
+      <button type="button" data-command="format" title="Format document (Alt-Shift-f)">
+        Format
+      </button>
+      <button type="button" data-command="definition" title="Go to definition (F12)">
+        Definition
+      </button>
+      <button type="button" data-command="references" title="Find references (Shift-F12)">
+        References
+      </button>
+      <button type="button" data-command="rename" title="Rename symbol (F2)">Rename</button>
+      <button type="button" data-command="completion" title="Show completions (Ctrl-Space)">
+        Complete
+      </button>
+      <button type="button" data-command="problems" title="Show problems (Ctrl-Shift-m)">
+        Problems
+      </button>
+      <button type="button" data-command="search" title="Search (Ctrl-f)">Search</button>
+    </nav>
     <main id="editors"></main>
     <script type="module" src="./main.ts"></script>
   </body>

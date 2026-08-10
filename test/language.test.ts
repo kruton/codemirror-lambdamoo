@@ -1,10 +1,11 @@
+import { insertNewlineAndIndent } from "@codemirror/commands";
 import {
   defaultHighlightStyle,
   ensureSyntaxTree,
   getIndentation,
   syntaxHighlighting,
 } from "@codemirror/language";
-import { EditorState } from "@codemirror/state";
+import { EditorState, type Transaction } from "@codemirror/state";
 import { classHighlighter, highlightTree } from "@lezer/highlight";
 import { describe, expect, it } from "vitest";
 import { lambdaMOO } from "../src/language.js";
@@ -67,5 +68,25 @@ describe("LambdaMOO language mode", () => {
     });
     expect(getIndentation(state, state.doc.line(2).from)).toBe(2);
     expect(getIndentation(state, state.doc.line(3).from)).toBe(0);
+  });
+
+  it("indents a new line inserted after a block opener", () => {
+    let state = EditorState.create({
+      doc: "if (ready)",
+      selection: { anchor: "if (ready)".length },
+      extensions: [lambdaMOO(), EditorState.tabSize.of(2)],
+    });
+
+    const handled = insertNewlineAndIndent({
+      get state() {
+        return state;
+      },
+      dispatch(transaction: Transaction) {
+        state = transaction.state;
+      },
+    } as never);
+
+    expect(handled).toBe(true);
+    expect(state.doc.toString()).toBe("if (ready)\n  ");
   });
 });
