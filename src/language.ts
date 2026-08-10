@@ -1,6 +1,4 @@
 import {
-  getIndentation,
-  getIndentUnit,
   indentService,
   LanguageSupport,
   StreamLanguage,
@@ -82,18 +80,21 @@ const openingKeyword = /^\s*(?:if|elseif|else|for|while|fork|try|except|finally)
 const closingKeyword = /^\s*(?:elseif|else|endif|endfor|endwhile|endfork|except|finally|endtry)\b/i;
 
 const mooIndentation: Extension = indentService.of((context, position) => {
-  const line = context.state.doc.lineAt(position);
-  if (line.number === 1) return 0;
+  const line = context.lineAt(position, 1);
+  let previous = context.lineAt(position, -1);
 
-  let previous = context.state.doc.line(line.number - 1);
-  while (previous.number > 1 && previous.text.trim() === "") {
-    previous = context.state.doc.line(previous.number - 1);
+  if (previous.from === line.from) {
+    const actualLine = context.state.doc.lineAt(position);
+    if (actualLine.number === 1) return 0;
+    previous = context.state.doc.line(actualLine.number - 1);
+    while (previous.from > 0 && previous.text.trim() === "") {
+      previous = context.state.doc.lineAt(previous.from - 1);
+    }
   }
 
-  const unit = getIndentUnit(context.state);
-  let indentation = getIndentation(context.state, previous.from) ?? 0;
-  if (openingKeyword.test(previous.text)) indentation += unit;
-  if (closingKeyword.test(line.text)) indentation = Math.max(0, indentation - unit);
+  let indentation = context.lineIndent(previous.from, -1);
+  if (openingKeyword.test(previous.text)) indentation += context.unit;
+  if (closingKeyword.test(line.text)) indentation = Math.max(0, indentation - context.unit);
   return indentation;
 });
 

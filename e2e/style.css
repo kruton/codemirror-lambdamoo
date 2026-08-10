@@ -1,0 +1,48 @@
+:root {
+  color: #202124;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+#editor-toolbar {
+  align-items: center;
+  background: #f7f7f8;
+  border-bottom: 1px solid #d8d8dc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.6rem;
+}
+
+#editor-toolbar button {
+  background: white;
+  border: 1px solid #b8b8be;
+  border-radius: 0.3rem;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.35rem 0.65rem;
+}
+
+#editor-toolbar button:hover {
+  background: #ececf0;
+}
+
+#editor-toolbar button:focus-visible {
+  outline: 2px solid #1769e0;
+  outline-offset: 1px;
+}
+
+#editors {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.cm-editor {
+  border: 1px solid #d8d8dc;
+  min-height: 10rem;
+}

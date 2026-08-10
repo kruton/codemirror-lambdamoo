@@ -6,6 +6,14 @@ test("runs the published LambdaMOO server in a shared worker session", async ({ 
   await page.goto("/");
   await expect(page.locator("body")).toHaveAttribute("data-ready", "true");
   await expect(page.locator(".cm-editor")).toHaveCount(2);
+  await expect(page.getByRole("navigation", { name: "Editor actions" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Format" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Definition" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "References" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Rename" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Complete" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Problems" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Search" })).toBeVisible();
   await expect(page.locator(".cm-lineNumbers")).toHaveCount(2);
   await expect(page.locator(".cm-foldGutter")).toHaveCount(2);
   await expect(page.locator(".cm-lint-marker-error")).toHaveCount(1);
@@ -18,6 +26,9 @@ test("runs the published LambdaMOO server in a shared worker session", async ({ 
   expect(result.semanticTokenCount).toBeGreaterThan(0);
   expect(result.formattingEditCount).toBeGreaterThan(0);
   expect(result.diagnosticCount).toBeGreaterThan(0);
+
+  await page.getByRole("button", { name: "Problems" }).click();
+  await expect(page.locator(".cm-panel-lint")).toBeVisible();
 
   await page.evaluate(() => {
     const view = window.lambdaMOOTest.second;
