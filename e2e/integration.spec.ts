@@ -22,7 +22,7 @@ test("runs the published LambdaMOO server in a shared worker session", async ({ 
   await expect(page.getByRole("button", { name: "Search" })).toBeVisible();
   await expect(page.locator(".cm-lineNumbers")).toHaveCount(2);
   await expect(page.locator(".cm-foldGutter")).toHaveCount(2);
-  await expect(page.locator(".cm-lint-marker-error")).toHaveCount(1);
+  await expect(page.locator(".cm-lint-marker-error")).toHaveCount(3);
 
   const result = await page.evaluate(() => ({
     semanticTokenCount: window.lambdaMOOTest.semanticTokenCount,
@@ -31,7 +31,7 @@ test("runs the published LambdaMOO server in a shared worker session", async ({ 
   }));
   expect(result.semanticTokenCount).toBeGreaterThan(0);
   expect(result.formattingEditCount).toBeGreaterThan(0);
-  expect(result.diagnosticCount).toBeGreaterThan(0);
+  expect(result.diagnosticCount).toBe(3);
 
   await page.getByRole("button", { name: "Problems" }).click();
   await expect(page.locator(".cm-panel-lint")).toBeVisible();
