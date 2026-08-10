@@ -6,6 +6,12 @@ test("runs the published LambdaMOO server in a shared worker session", async ({ 
   await page.goto("/");
   await expect(page.locator("body")).toHaveAttribute("data-ready", "true");
   await expect(page.locator(".cm-editor")).toHaveCount(2);
+  await expect(page.getByRole("tab", { name: /^invalid\.moo/ })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(page.getByRole("tabpanel", { name: /^invalid\.moo/ })).toBeVisible();
+  await expect(page.getByRole("tabpanel", { name: /^valid\.moo/ })).toBeHidden();
   await expect(page.getByRole("navigation", { name: "Editor actions" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Format" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Definition" })).toBeVisible();
@@ -30,6 +36,9 @@ test("runs the published LambdaMOO server in a shared worker session", async ({ 
   await page.getByRole("button", { name: "Problems" }).click();
   await expect(page.locator(".cm-panel-lint")).toBeVisible();
 
+  await page.getByRole("tab", { name: /^valid\.moo/ }).click();
+  await expect(page.getByRole("tabpanel", { name: /^valid\.moo/ })).toBeVisible();
+  await expect(page.getByRole("tabpanel", { name: /^invalid\.moo/ })).toBeHidden();
   await page.evaluate(() => {
     const view = window.lambdaMOOTest.second;
     const readyReference = view.state.doc.toString().lastIndexOf("ready");
