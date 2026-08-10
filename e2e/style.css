@@ -36,10 +36,49 @@ body {
   outline-offset: 1px;
 }
 
-#editors {
-  display: grid;
-  gap: 1rem;
+#editor-tabs {
+  border-bottom: 1px solid #b8b8be;
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem 0;
+}
+
+#editor-tabs button {
+  background: #e8e8ec;
+  border: 1px solid #b8b8be;
+  border-bottom: 0;
+  border-radius: 0.35rem 0.35rem 0 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.5rem 0.8rem;
+}
+
+#editor-tabs button[aria-selected="true"] {
+  background: white;
+  font-weight: 600;
+  margin-bottom: -1px;
+  padding-bottom: calc(0.5rem + 1px);
+}
+
+#editor-tabs button:focus-visible {
+  outline: 2px solid #1769e0;
+  outline-offset: -3px;
+}
+
+.tab-status {
+  color: #626269;
+  font-size: 0.75em;
+  font-weight: 400;
+  margin-left: 0.35rem;
+}
+
+.editor-panel {
   padding: 1rem;
+}
+
+.editor-panel[hidden] {
+  display: none;
 }
 
 .cm-editor {

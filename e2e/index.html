@@ -25,7 +25,43 @@
       </button>
       <button type="button" data-command="search" title="Search (Ctrl-f)">Search</button>
     </nav>
-    <main id="editors"></main>
+    <main>
+      <div id="editor-tabs" role="tablist" aria-label="Open LambdaMOO documents">
+        <button
+          id="invalid-tab"
+          type="button"
+          role="tab"
+          aria-selected="true"
+          aria-controls="invalid-editor"
+          tabindex="0"
+        >
+          invalid.moo <span class="tab-status">Has errors</span>
+        </button>
+        <button
+          id="valid-tab"
+          type="button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="valid-editor"
+          tabindex="-1"
+        >
+          valid.moo <span class="tab-status">Valid</span>
+        </button>
+      </div>
+      <section
+        id="invalid-editor"
+        class="editor-panel"
+        role="tabpanel"
+        aria-labelledby="invalid-tab"
+      ></section>
+      <section
+        id="valid-editor"
+        class="editor-panel"
+        role="tabpanel"
+        aria-labelledby="valid-tab"
+        hidden
+      ></section>
+    </main>
     <script type="module" src="./main.ts"></script>
   </body>
 </html>

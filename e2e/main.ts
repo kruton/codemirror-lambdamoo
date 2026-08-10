@@ -16,16 +16,45 @@ import "./style.css";
 const firstUri = "file:///integration/invalid.moo";
 const secondUri = "file:///integration/valid.moo";
 const support = await createLambdaMOO({ timeout: 5000 });
-const parent = document.querySelector<HTMLElement>("#editors");
-if (!parent) throw new Error("Editor fixture is missing");
-const editorParent = parent;
+const firstParent = document.querySelector<HTMLElement>("#invalid-editor");
+const secondParent = document.querySelector<HTMLElement>("#valid-editor");
+if (!firstParent || !secondParent) throw new Error("Editor fixture is missing");
 
-const first = createEditor("if (ready)\nnotify(player);", firstUri);
-const second = createEditor("ready = 1;\nif (ready)\nnotify(player);\nendif", secondUri);
+const first = createEditor("if (ready)\nnotify(player);", firstUri, firstParent);
+const second = createEditor(
+  "ready = 1;\nif (ready)\nnotify(player);\nendif",
+  secondUri,
+  secondParent,
+);
 let activeEditor = first;
-for (const view of [first, second]) {
+const editorTabs = [
+  {
+    tab: document.querySelector<HTMLButtonElement>("#invalid-tab"),
+    panel: firstParent,
+    view: first,
+  },
+  {
+    tab: document.querySelector<HTMLButtonElement>("#valid-tab"),
+    panel: secondParent,
+    view: second,
+  },
+];
+if (editorTabs.some(({ tab }) => !tab)) throw new Error("Editor tabs are missing");
+
+for (const { tab, view } of editorTabs) {
   view.dom.addEventListener("focusin", () => {
     activeEditor = view;
+  });
+  tab?.addEventListener("click", () => {
+    for (const entry of editorTabs) {
+      const selected = entry.view === view;
+      entry.tab?.setAttribute("aria-selected", String(selected));
+      entry.tab?.setAttribute("tabindex", selected ? "0" : "-1");
+      entry.panel.hidden = !selected;
+    }
+    activeEditor = view;
+    view.requestMeasure();
+    view.focus();
   });
 }
 
@@ -77,9 +106,9 @@ window.lambdaMOOTest = {
 };
 document.body.dataset.ready = "true";
 
-function createEditor(document: string, uri: string): EditorView {
+function createEditor(document: string, uri: string, parent: HTMLElement): EditorView {
   return new EditorView({
-    parent: editorParent,
+    parent,
     state: EditorState.create({
       doc: document,
       extensions: [basicSetup, lintGutter(), support.extension(uri)],
