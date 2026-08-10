@@ -1,6 +1,6 @@
 {
   "repository": "kruton/moo-lsp-rs",
-  "version": "v0.2.8",
+  "version": "v0.2.9",
   "archive": "moo-lsp-rs-browser.tar.gz",
   "directory": "browser"
 }
