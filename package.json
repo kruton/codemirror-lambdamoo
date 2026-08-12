@@ -1,7 +1,7 @@
 {
   "name": "codemirror-lambdamoo",
   "version": "0.1.3",
-  "description": "LambdaMOO language support for CodeMirror 6, powered by moo-lsp-rs WebAssembly",
+  "description": "LambdaMOO language support for CodeMirror 6, powered by @kruton/moo-lsp",
   "keywords": [
     "codemirror",
     "lambdamoo",
@@ -18,8 +18,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./worker": "./dist/worker.js",
-    "./wasm": "./dist/lsp/moo_lsp_rs_bg.wasm"
+    "./worker": "./dist/worker.js"
   },
   "files": [
     "dist",
@@ -39,8 +38,7 @@
   },
   "scripts": {
     "clean": "node --experimental-strip-types scripts/clean.ts",
-    "sync:lsp": "node --experimental-strip-types scripts/sync-lsp.ts",
-    "build": "npm run clean && tsc -p tsconfig.build.json && node --experimental-strip-types scripts/copy-assets.ts",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
     "check": "npm run typecheck && npm run lint && npm test && npm run build && npm run pack:check",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "biome check .",
@@ -57,6 +55,7 @@
     "@codemirror/lsp-client": "^6.2.5",
     "@codemirror/state": "^6.5.2",
     "@codemirror/view": "^6.38.6",
+    "@kruton/moo-lsp": "^0.2.11-beta.0",
     "@lezer/highlight": "^1.2.1",
     "comlink": "^4.4.2"
   },
