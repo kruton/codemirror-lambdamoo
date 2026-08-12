@@ -20,9 +20,9 @@ const firstParent = document.querySelector<HTMLElement>("#invalid-editor");
 const secondParent = document.querySelector<HTMLElement>("#valid-editor");
 if (!firstParent || !secondParent) throw new Error("Editor fixture is missing");
 
-const first = createEditor("if (ready)\nnotify(player);", firstUri, firstParent);
+const first = createEditor('if (ready)\nnotify(player, "hi");', firstUri, firstParent);
 const second = createEditor(
-  "ready = 1;\nif (ready)\nnotify(player);\nendif",
+  'ready = 1;\nif (ready)\nnotify(player, "hello");\nendif',
   secondUri,
   secondParent,
 );
