@@ -1,19 +1,16 @@
 import { LSPClient, type LSPClientConfig, languageServerExtensions } from "@codemirror/lsp-client";
 import type { Extension } from "@codemirror/state";
-import { releaseProxy, transfer, wrap } from "comlink";
+import { releaseProxy, wrap } from "comlink";
 import { documentHighlightCapabilities, documentHighlights } from "./document-highlights.js";
 import { lambdaMOO } from "./language.js";
 import { semanticTokenCapabilities, semanticTokens } from "./semantic-tokens.js";
 import { WorkerTransport } from "./transport.js";
-import { normalizeWasmSource, type WasmSource } from "./wasm-source.js";
-import type { LspWorkerApi, WorkerWasmSource } from "./worker-api.js";
+import type { LspWorkerApi } from "./worker-api.js";
 
 export { lambdaMOO, lambdaMOOLanguage } from "./language.js";
-export type { WasmSource } from "./wasm-source.js";
-export type { LspWorkerApi, WorkerWasmSource } from "./worker-api.js";
+export type { LspWorkerApi } from "./worker-api.js";
 
 export type LambdaMOOOptions = {
-  wasm?: WasmSource | (() => WasmSource | Promise<WasmSource>);
   rootUri?: string;
   timeout?: number;
   workerFactory?: (url: URL) => Worker;
@@ -37,12 +34,8 @@ export async function createLambdaMOO(options: LambdaMOOOptions = {}): Promise<L
   const workerFailure = listenForWorkerFailure(worker, reportError);
 
   try {
-    const source = await normalizeWasmSource(
-      options.wasm ?? new URL("./lsp/moo_lsp_rs_bg.wasm", import.meta.url),
-    );
-    const remoteSource = source instanceof ArrayBuffer ? transfer(source, [source]) : source;
     await withTimeout(
-      Promise.race([remote.initialize(remoteSource as WorkerWasmSource), workerFailure.promise]),
+      Promise.race([remote.initialize(), workerFailure.promise]),
       timeout,
       "worker initialization",
     );

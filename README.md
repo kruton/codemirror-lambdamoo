@@ -37,23 +37,9 @@ editors by calling `extension()` with a distinct document URI for each editor.
 
 ## Loading WebAssembly
 
-The bundled server is loaded by default. Applications that copy or host WASM
-separately can override it with a URL, response, bytes, compiled module, or
-async loader:
-
-```ts
-const moo = await createLambdaMOO({
-  wasm: new URL("/assets/moo_lsp_rs_bg.wasm", location.href),
-  onError(error) {
-    console.error("LambdaMOO language server failed", error);
-  },
-});
-```
-
-Accepted values are `string`, `URL`, `Response`, `ArrayBuffer`, `Uint8Array`,
-and `WebAssembly.Module`. Byte inputs are copied before being transferred, so
-the caller's buffer is not detached. Override binaries must be compatible with
-the packaged wasm-bindgen glue. Cross-origin URLs must allow CORS.
+The language server and its WebAssembly module are provided by
+`@kruton/moo-lsp`. The module initializes lazily inside the worker; no separate
+WASM URL or asset-copying setup is required.
 
 For a custom worker construction policy:
 
@@ -79,7 +65,6 @@ worker, WebAssembly module, and LSP initialization exchange are ready.
 
 Options:
 
-- `wasm`: custom WASM source or loader.
 - `rootUri`: project root URI sent during LSP initialization.
 - `timeout`: LSP and shutdown timeout in milliseconds; defaults to 3000.
 - `workerFactory`: constructs the module worker from the packaged worker URL.
@@ -102,20 +87,14 @@ Typical development flow:
 
 ```sh
 npm install
-npm run sync:lsp
 npm run check
 npx playwright install chromium firefox
 npm run test:browser
 ```
 
-`sync:lsp` downloads `moo-lsp-rs-browser.tar.gz` and `SHA256SUMS` for the pinned
-`moo-lsp-rs` release. In CI it also verifies the GitHub build-provenance
-attestation. The staged files live under `.lsp/`; only built assets under `dist/`
-are published.
-
 ## See also
 
-- [moo-lsp-rs](https://github.com/kruton/moo-lsp-rs/)
+- [@kruton/moo-lsp](https://www.npmjs.com/package/@kruton/moo-lsp)
 - [tree-sitter-lambdamoo](https://github.com/kruton/tree-sitter-lambdamoo/)
 
 ## License

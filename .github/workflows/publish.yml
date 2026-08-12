@@ -27,7 +27,6 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - run: npm ci
-      - run: npm run sync:lsp
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
