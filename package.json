@@ -55,7 +55,7 @@
     "@codemirror/lsp-client": "^6.2.5",
     "@codemirror/state": "^6.5.2",
     "@codemirror/view": "^6.38.6",
-    "@kruton/moo-lsp": "^0.2.11-beta.0",
+    "@kruton/moo-lsp": "^0.3.0",
     "@lezer/highlight": "^1.2.1",
     "comlink": "^4.4.2"
   },
